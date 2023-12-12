@@ -14,7 +14,8 @@ This javascript / Next.js project prototype was created through the collaborativ
 ## Key Features
 Wireframes:
 
-![alt text](https://github.com/JLoobs/PowerHackApp-/blob/main/Screenshot%202023-07-22%20at%2000.35.11.png?raw=true)
+![alt text](https://github.com/xAmiBa/Home-on-time-Android/blob/main/Screenshot%202023-12-12%20at%2019.09.18.png)
+![alt text](https://github.com/xAmiBa/Home-on-time-Android/blob/main/Screenshot%202023-12-12%20at%2019.09.25.png)
 
 - **User Profiles:** Collects user information, including name, phone number, and estimated journey time.
 
