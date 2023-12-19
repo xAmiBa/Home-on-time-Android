@@ -37,6 +37,8 @@ fun JourneyScreen (
 
     val notificationHelper = NotificationHelper(context)
     println("BUDDY PHONE: $buddyPhoneNumber")
+    println("TIMER TIME FROM STATE: $userJourneyTimeInMinutes")
+
 
     Column {
         // countdown
@@ -74,37 +76,55 @@ fun JourneyScreen (
 }
 
 @Composable
-fun Timer(remainingTimeInSeconds: Int) {
-//    var timeRemaining by remember { mutableIntStateOf(remainingTimeInSeconds) }
-//    var isTimerRunning by remember { mutableStateOf(true) }
-//
-//    DisposableEffect(timeRemaining) {
-//        val countDownTimer = object : CountDownTimer(timeRemaining * 1000L, 1000) {
-//            override fun onTick(millisUntilFinished: Long) {
-//                timeRemaining = (millisUntilFinished / 1000).toInt()
-//            }
-//
-//            override fun onFinish() {
-//                isTimerRunning = false
-//            }
-//        }
-//
-//        if (isTimerRunning) {
-//            countDownTimer.start()
-//        }
-//
-//        onDispose {
-//            countDownTimer.cancel()
-//        }
-//    }
-//
-//    Column {
-//        Text(text = "Time remaining: $timeRemaining seconds")
-//
-//        // Example of a button to stop the timer
-//        Button(onClick = { isTimerRunning = false }) {
-//            Text(text = "Stop Timer")
-//        }
-//    }
+fun Timer(remainingTimeInMinutes: Int) {
+    var remainingTimeInMilliseconds = remainingTimeInMinutes * 60 * 1000
+    var timeRemaining by remember { mutableIntStateOf(remainingTimeInMilliseconds) }
+    var isTimerRunning by remember { mutableStateOf(true) }
+
+    // BUG: minutes does not decrease
+
+    DisposableEffect(timeRemaining) {
+        val countDownTimer = object : CountDownTimer(timeRemaining * 1000L, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                timeRemaining -= 1000
+          }
+
+            override fun onFinish() {
+                isTimerRunning = false
+            }
+        }
+
+        if (isTimerRunning) {
+            countDownTimer.start()
+        }
+
+        onDispose {
+            countDownTimer.cancel()
+        }
+    }
+
+    Column {
+        val minutes = timeRemaining / 60000
+        val seconds = (timeRemaining % 6000) / 100
+
+        Text(text = "Journey time remaining:")
+        Text(text = "${String.format("%02d", minutes)}:${String.format("%02d", seconds)}")
+
+        // Example of a button to stop the timer
+        Button(onClick = { isTimerRunning = false }) {
+            Text(text = "Stop Timer")
+        }
+        Button(onClick = { timeRemaining += 5 * 60 * 1000}) {
+            Text(text = "+ 5 minutes")
+        }
+    }
 }
 
+
+
+
+@Preview
+@Composable
+fun PreviewTimer() {
+    Timer(60)
+}

@@ -28,12 +28,15 @@ class NotificationHelper(private val context: Context) {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun showNotification(screenToNavigate: String, buddyNumberStore: String) {
+    fun showNotification(screenToNavigate: String, buddyNumberStore: String = "", timeRemainingStore: String = "0") {
         val channelId = "HomeOnTime_channel"
+
+        println("TIME RECIEVED IN NOTIFICATION: $timeRemainingStore")
 
         val notificationIntent = Intent(context, MainActivity::class.java)
         notificationIntent.putExtra("screenToNavigate", screenToNavigate)
         notificationIntent.putExtra("buddyNumberStore", buddyNumberStore)
+        notificationIntent.putExtra("timeRemainingStore", timeRemainingStore)
 
 
         notificationIntent.flags =

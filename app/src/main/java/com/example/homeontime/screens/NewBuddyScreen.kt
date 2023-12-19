@@ -71,7 +71,8 @@ fun BuddyForm(
                     buddyPhoneNumber,
                     "Hi $buddyName!\nThanks for being my HomeOnTime buddy.\nI just started my journey!\nI will be home within $userJourneyTimeString minutes. If I won't let you know I'm home, please get in touch."
                 )
-                notificationHelper.showNotification("JOURNEY_SCREEN", buddyPhoneNumber)
+                notificationHelper.showNotification("JOURNEY_SCREEN", buddyPhoneNumber, userJourneyTime.toString())
+                println("USER JOURNEY TIME SENT IN NOTIFCATION: $userJourneyTime")
                 startJourneyButton()
                       },
             enabled = (

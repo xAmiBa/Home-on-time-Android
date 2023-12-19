@@ -14,6 +14,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -37,8 +38,12 @@ class MainActivity : ComponentActivity() {
 
         val screenToNavigate = intent.getStringExtra("screenToNavigate")
         val buddyNumberStore = intent.getStringExtra("buddyNumberStore") ?: ""
+        val timeRemainingStore = intent.getStringExtra("timeRemainingStore")?.toIntOrNull() ?: 0
 
-        println("PUT EXTRA PRINTS: $buddyNumberStore")
+
+//        println("PUT EXTRA PRINTS: $buddyNumberStore")
+        println("PUT EXTRA PRINTS TIME RECIEVED MAIN ACTIVITY: $timeRemainingStore")
+
         // check if screenToNavigate is passed so user comes back to the same screen
         if (screenToNavigate == "JOURNEY_SCREEN") {
             setContent {
@@ -49,7 +54,7 @@ class MainActivity : ComponentActivity() {
                         color = MaterialTheme.colorScheme.background
                     ) {
                         checkPermissions()
-                        App(this, screenToNavigate, buddyNumberStore)
+                        App(this, screenToNavigate, buddyNumberStore, timeRemainingStore)
 
                     }
                 }
@@ -93,7 +98,8 @@ class MainActivity : ComponentActivity() {
 fun App(
     context: Context,
     screenToNavigate: String = "HOME_SCREEN",
-    buddyNumberStore: String = ""
+    buddyNumberStore: String = "",
+    timeRemainingStore: Int = 0
 ) {
     // state variables: USER
     var userName by remember {
@@ -103,7 +109,7 @@ fun App(
         mutableStateOf("")
     }
     var userJourneyTimeInMinutes by remember {
-        mutableStateOf(0)
+        mutableIntStateOf(timeRemainingStore)
     }
     //state variables: BUDDY
     var buddyName by remember {
@@ -166,7 +172,7 @@ fun App(
                 context,
                 userName,
                 userPhoneNumber,
-                userJourneyTimeInMinutes,
+                timeRemainingStore,
                 buddyName,
                 buddyPhoneNumber
             )
