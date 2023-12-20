@@ -19,6 +19,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.core.app.ActivityCompat
 import androidx.navigation.ActivityNavigator
 import androidx.navigation.compose.NavHost
@@ -29,6 +32,7 @@ import com.example.homeontime.screens.HomeScreen
 import com.example.homeontime.screens.NewUserScreen
 import com.example.homeontime.screens.NewBuddyScreen
 import com.example.homeontime.screens.JourneyScreen
+import com.example.homeontime.ui.theme.Background
 
 class MainActivity : ComponentActivity() {
 
@@ -50,8 +54,13 @@ class MainActivity : ComponentActivity() {
                 HomeOnTimeTheme {
                     // A surface container using the 'background' color from the theme
                     Surface(
-                        modifier = Modifier.fillMaxSize(),
-                        color = MaterialTheme.colorScheme.background
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .paint(
+                                painterResource(id = R.drawable.ic_launcher_background)
+                            )
+
+//                        color = MaterialTheme.colorScheme.secondary
                     ) {
                         checkPermissions()
                         App(this, screenToNavigate, buddyNumberStore, timeRemainingStore)
@@ -64,11 +73,9 @@ class MainActivity : ComponentActivity() {
             setContent {
                 HomeOnTimeTheme {
                     // A surface container using the 'background' color from the theme
-                    Surface(
-                        modifier = Modifier.fillMaxSize(),
-                        color = MaterialTheme.colorScheme.background
-                    ) {
+                    Surface {
                         checkPermissions()
+                        Background()
                         App(this, buddyNumberStore = buddyNumberStore)
 
                     }

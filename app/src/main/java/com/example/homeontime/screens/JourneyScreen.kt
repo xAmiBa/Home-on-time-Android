@@ -4,24 +4,27 @@ import android.content.Context
 import android.os.Build
 import android.os.CountDownTimer
 import androidx.annotation.RequiresApi
-import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import com.example.homeontime.NotificationHelper
 import com.example.homeontime.sendText
-import kotlin.math.ceil
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -77,9 +80,11 @@ fun JourneyScreen (
 
 @Composable
 fun Timer(remainingTimeInMinutes: Int) {
-    var remainingTimeInMilliseconds = remainingTimeInMinutes * 60 * 1000
+    var remainingTimeInMilliseconds = remainingTimeInMinutes * 60 * 1000 * 60
     var timeRemaining by remember { mutableIntStateOf(remainingTimeInMilliseconds) }
     var isTimerRunning by remember { mutableStateOf(true) }
+    var displayReminder by remember { mutableStateOf(false) }
+
 
     // BUG: minutes does not decrease
 
@@ -88,9 +93,9 @@ fun Timer(remainingTimeInMinutes: Int) {
             override fun onTick(millisUntilFinished: Long) {
                 timeRemaining -= 1000
           }
-
             override fun onFinish() {
                 isTimerRunning = false
+                displayReminder = true
             }
         }
 
@@ -104,17 +109,36 @@ fun Timer(remainingTimeInMinutes: Int) {
     }
 
     Column {
-        val minutes = timeRemaining / 60000
-        val seconds = (timeRemaining % 6000) / 100
+        val minutes = timeRemaining / 60000 / 60
+        val seconds = (timeRemaining / 100000) % 60
 
         Text(text = "Journey time remaining:")
-        Text(text = "${String.format("%02d", minutes)}:${String.format("%02d", seconds)}")
+        Text(text = "$minutes : $seconds")
 
+        if (displayReminder) {
+            Dialog(
+                onDismissRequest = { displayReminder = false }
+            ) {
+                // Wrap the content in a Box to create a frame
+                Box(
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.primaryContainer)
+                        .padding(16.dp)
+                        .size(300.dp) // Adjust the size as needed
+                ) {Column{
+                    Text("Time is up! Are you home yet?")
+                    Button(onClick = { displayReminder = false }) {
+                        Text("Cancel")
+                    }
+                }
+                }
+            }
+        }
         // Example of a button to stop the timer
         Button(onClick = { isTimerRunning = false }) {
             Text(text = "Stop Timer")
         }
-        Button(onClick = { timeRemaining += 5 * 60 * 1000}) {
+        Button(onClick = { timeRemaining += 15000000}) {
             Text(text = "+ 5 minutes")
         }
     }
