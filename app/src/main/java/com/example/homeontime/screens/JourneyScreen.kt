@@ -5,10 +5,15 @@ import android.os.Build
 import android.os.CountDownTimer
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -19,9 +24,12 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.homeontime.NotificationHelper
 import com.example.homeontime.sendText
@@ -39,11 +47,16 @@ fun JourneyScreen (
 ) {
 
     val notificationHelper = NotificationHelper(context)
-    println("BUDDY PHONE: $buddyPhoneNumber")
-    println("TIMER TIME FROM STATE: $userJourneyTimeInMinutes")
 
+    Column (
+        horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        val buttonModifier = Modifier
+            .width(300.dp)
+            .height(70.dp)
+//        .align(Alignment.CenterHorizontally)
 
-    Column {
         // countdown
         Timer(userJourneyTimeInMinutes)
 
@@ -58,21 +71,26 @@ fun JourneyScreen (
             )
             //TODO: final screen? Or popup?
             notificationHelper.showNotification("JOURNEY_SCREEN", buddyPhoneNumber)
-        }) {
+        },
+            modifier = buttonModifier,
+            shape = RoundedCornerShape(10.dp)
+        ) {
             Text(text = "Swipe for help")
         }
 
         // I'm home button
         Button(onClick = {
-            println("IM HOME BUTTON CLICK")
             sendText(
                 context,
                 buddyPhoneNumber,
-                "Hi $buddyName!\nI just got home safely!\nThanks for keeping me safe :)\n$userName"
+                "Hi $buddyName!\nI just got home safely!\nThanks for keeping me safe :)\n$userName",
             )
             //TODO: final screen? Or popup?
             notificationHelper.showNotification("JOURNEY_SCREEN", buddyPhoneNumber)
-        }) {
+        },
+            modifier = buttonModifier,
+            shape = RoundedCornerShape(10.dp)
+        ) {
             Text(text = "I'm home!")
         }
     }
@@ -80,6 +98,7 @@ fun JourneyScreen (
 
 @Composable
 fun Timer(remainingTimeInMinutes: Int) {
+
     var remainingTimeInMilliseconds = remainingTimeInMinutes * 60 * 1000 * 60
     var timeRemaining by remember { mutableIntStateOf(remainingTimeInMilliseconds) }
     var isTimerRunning by remember { mutableStateOf(true) }
@@ -112,8 +131,29 @@ fun Timer(remainingTimeInMinutes: Int) {
         val minutes = timeRemaining / 60000 / 60
         val seconds = (timeRemaining / 100000) % 60
 
-        Text(text = "Journey time remaining:")
-        Text(text = "$minutes : $seconds")
+        Text(
+            text = "Journey time\nremaining:",
+            style = MaterialTheme.typography.titleLarge,
+            fontSize = 40.sp,
+            modifier = Modifier.padding(0.dp, 90.dp, 0.dp, 0.dp)
+        )
+        Text(
+            text = "$minutes : $seconds",
+            style = MaterialTheme.typography.titleLarge,
+            fontSize = 150.sp,
+            modifier = Modifier.padding(0.dp, 90.dp, 0.dp, 0.dp)
+            )
+
+        Button(
+            onClick = { timeRemaining += 15000000},
+            modifier = Modifier.width(100.dp).height(100.dp),
+            shape = RoundedCornerShape(10.dp)
+
+        ) {
+            Text(
+                text = "+ 5 \'",
+                fontSize = 25.sp)
+        }
 
         if (displayReminder) {
             Dialog(
@@ -126,29 +166,14 @@ fun Timer(remainingTimeInMinutes: Int) {
                         .padding(16.dp)
                         .size(300.dp) // Adjust the size as needed
                 ) {Column{
-                    Text("Time is up! Are you home yet?")
+                    Text("Your journey is coming to an end!")
                     Button(onClick = { displayReminder = false }) {
-                        Text("Cancel")
+                        Text("X")
                     }
                 }
                 }
             }
         }
-        // Example of a button to stop the timer
-        Button(onClick = { isTimerRunning = false }) {
-            Text(text = "Stop Timer")
-        }
-        Button(onClick = { timeRemaining += 15000000}) {
-            Text(text = "+ 5 minutes")
-        }
+
     }
-}
-
-
-
-
-@Preview
-@Composable
-fun PreviewTimer() {
-    Timer(60)
 }

@@ -1,6 +1,7 @@
 package com.example.homeontime.ui.theme
 
 import androidx.compose.material3.Typography
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -28,6 +29,7 @@ val Typography = Typography(
     ),
     titleLarge = TextStyle(
         fontFamily = FontFamily(Font(R.font.lobster)),
+        color = Color(0xFFC2185B),
         fontWeight = FontWeight.Normal,
         fontSize = 130.sp,
         letterSpacing = 0.sp
