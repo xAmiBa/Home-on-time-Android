@@ -2,6 +2,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.ncorti.ktfmt.gradle") version "0.16.0"
 }
 
 android {
@@ -82,5 +83,5 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
     implementation("androidx.compose.ui:ui-text-google-fonts:1.5.4")
-
+    implementation ("androidx.navigation:navigation-compose:2.7.0-rc01")
 }

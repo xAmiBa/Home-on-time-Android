@@ -1,5 +1,4 @@
 package com.example.homeontime.screens
-
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -22,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import com.example.homeontime.NotificationHelper
 import com.example.homeontime.sendText
 
+/* NEW BUDDY SCREEN let user add their safety buddy information */
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NewBuddyScreen (
@@ -41,7 +41,9 @@ fun NewBuddyScreen (
             text="Set up your\nHomeOnTime\nbuddy!",
             style = MaterialTheme.typography.titleLarge,
             fontSize = 40.sp,
-            modifier = Modifier.padding(0.dp, 90.dp, 0.dp, 0.dp))
+            modifier = Modifier.padding(0.dp, 90.dp, 0.dp, 0.dp)
+        )
+
         BuddyForm(
             context,
             buddyName,
@@ -56,6 +58,7 @@ fun NewBuddyScreen (
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
+// Handles user input and assigns to state variables
 fun BuddyForm(
     context: Context,
     buddyName: String,
@@ -66,8 +69,9 @@ fun BuddyForm(
     userJourneyTime: Int
 
 ) {
+    // initializing notifiactionHelper class responsible for notification sending
     val notificationHelper = NotificationHelper(context)
-    var userJourneyTimeString = userJourneyTime.toString()
+    val userJourneyTimeString = userJourneyTime.toString()
 
     Column {
 
@@ -83,7 +87,6 @@ fun BuddyForm(
             placeholder = { Text(text = "Veronica")},
             modifier = textFieldModifier,
             label ={ Text(text = "Your buddy's name") }
-
         )
 
         TextField(
@@ -92,19 +95,21 @@ fun BuddyForm(
             placeholder = { Text(text = "0123456789")},
             modifier = textFieldModifier,
             label ={ Text(text = "Your buddy's phone number") }
-
         )
 
         Button(
             onClick = {
+                // text sending initialized
                 sendText(
                     context,
                     buddyPhoneNumber,
                     "Hi $buddyName!\nThanks for being my HomeOnTime buddy.\nI just started my journey!\nI will be home within $userJourneyTimeString minutes. If I won't let you know I'm home, please get in touch."
                 )
+                // notification send for the user to come back to app after sending text
                 notificationHelper.showNotification("JOURNEY_SCREEN", buddyPhoneNumber, userJourneyTime.toString())
                 startJourneyButton()
                       },
+            // input validation dependant button
             enabled = (
                     (buddyName.length > 2) &&
                     (buddyPhoneNumber.length == 11) &&
@@ -115,10 +120,6 @@ fun BuddyForm(
                 .height(70.dp)
                 .align(Alignment.CenterHorizontally),
             shape = RoundedCornerShape(10.dp)
-        ) {
-            Text(
-                text = "Start your journey!",
-                fontSize = 30.sp)
-        }
+        ) { Text(text = "Start your journey!", fontSize = 30.sp) }
     }
 }

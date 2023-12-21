@@ -1,11 +1,8 @@
 package com.example.homeontime.screens
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,6 +18,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/* NEW USER SCREEN allowing user to add their name, phone number and journey time */
 @Composable
 fun NewUserScreen(
     userName: String,
@@ -31,6 +29,7 @@ fun NewUserScreen(
     userJourneyTimeChange: (String) -> Unit,
     addBuddyButton: () -> Unit
 ) {
+
     Column (
         horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
@@ -49,17 +48,18 @@ fun NewUserScreen(
 }
 
 @Composable
+// Heading customized depending on user name input.
 fun UserHeader(userName: String) {
     Text(
         text = if (userName == "") "Start your journey!" else "Start your journey \n$userName",
         style = MaterialTheme.typography.titleLarge,
         fontSize = 40.sp,
         modifier = Modifier.padding(0.dp, 90.dp, 0.dp, 0.dp)
-
         )
 }
 
 @Composable
+// User name, phone and journey time input handling
 fun UserForm(
     userName: String,
     userPhoneNumber: String,
@@ -69,42 +69,40 @@ fun UserForm(
     userJourneyTimeChange: (String) -> Unit,
     addBuddyButton: () -> Unit
 ){
-
     val textFieldModifier = Modifier
         .width(390.dp)
         .height(110.dp)
         .fillMaxWidth()
         .padding(20.dp)
 
-    Column (
+    Column {
 
-    ) {
         TextField(
             value = userName,
             onValueChange = userNameChange,
             placeholder = {(Text(text = "Anna"))},
             modifier = textFieldModifier,
             label ={ Text(text = "Your name") }
-
         )
+
         TextField(
             value = userPhoneNumber,
             onValueChange = userPhoneNumberChange,
             placeholder = {(Text(text = "0123456789"))},
             modifier = textFieldModifier,
             label ={ Text(text = "Your phone number") }
-
-
         )
+
         TextField(
-            value = userJourneyTimeInMinutes.toString(),
+            value = userJourneyTimeInMinutes,
             onValueChange = userJourneyTimeChange,
-            // TODO: does this stop user from entering letters?
+            // Keyboard setup accepting only numeric values
             keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
             modifier = textFieldModifier,
             label ={ Text(text = "Your journey time in minutes") }
         )
         Button(
+            // Button is enabled only after positive validation of input
             enabled = (
                     (userName.length > 2) &&
                     (userPhoneNumber.length == 11) &&
@@ -117,11 +115,6 @@ fun UserForm(
                 .height(70.dp)
                 .align(Alignment.CenterHorizontally),
             shape = RoundedCornerShape(10.dp)
-
-        ) {
-            // TODO: replace with next image button!
-            Text(text = ">",
-                fontSize = 40.sp)
-        }
+        ) {Text(text = ">", fontSize = 40.sp) }
         }
 }
