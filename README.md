@@ -1,6 +1,8 @@
 # Home on Time App
+<p align="center">
+  <img src="https://github.com/xAmiBa/Home-on-time-Android/blob/main/demo/Screen_recording_20231221_201849.gif" alt="Home on Time App" width="200"/>
+</p>
 
-![Home on Time App](https://github.com/JLoobs/PowerHackApp-/blob/main/Screenshot%202023-07-22%20at%2000.34.45.png?raw=true)
 
 ## Description
 
@@ -9,6 +11,11 @@ Home on Time is an ongoing project of a powerful safety app developed during the
 This JavaScript/Next.js project prototype was created through the collaborative efforts of a skilled and diverse group of developers, including [Rachel Newby](https://github.com/rachelnewby), [Sonia Botsarova](https://github.com/sonianb), [Amy Kuner](https://github.com/amykuner), [Justyna Luberda](https://github.com/JLoobs), and [Amina Ba](https://github.com/xamiba). **The project was subsequently reimagined as a mobile app by Amina Ba.**
 
 ## Key Features
+<p align="center">
+  <img src="https://github.com/xAmiBa/Home-on-time-Android/blob/main/demo/Screenshot_20231221_201649.png" alt="Home on Time App" width="200"/>
+  <img src="https://github.com/xAmiBa/Home-on-time-Android/blob/main/demo/Screenshot_20231221_201945.png" alt="Home on Time App" width="200"/>
+  <img src="https://github.com/xAmiBa/Home-on-time-Android/blob/main/demo/Screenshot_20231221_202014.png" alt="Home on Time App" width="200"/>
+</p>
 
 Wireframes:
 
